@@ -5,7 +5,7 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "dm-is-published"
-    gem.summary = %Q{A DataMapper plugin provides an easy way to add different states to your models.}
+    gem.summary = %Q{A DataMapper plugin that provides an easy way to add different states to your models.}
     gem.email = "kematzy@gmail.com"
     gem.homepage = "http://github.com/kematzy/dm-is-published"
     gem.authors = ["kematzy"]
