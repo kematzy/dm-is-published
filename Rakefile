@@ -21,9 +21,9 @@ Hoe.new(GEM_NAME, GEM_VERSION) do |p|
   p.url = 'http://github.com/kematzy/dm-is-published'
 
   p.clean_globs |= %w[ log pkg coverage ]
-  p.spec_extras = { :has_rdoc => true, :extra_rdoc_files => %w[ README.txt LICENSE TODO History.txt ] }
+  p.spec_extras = { :has_rdoc => true, :extra_rdoc_files => %w[ README.rdoc LICENSE TODO History.txt ] }
 
-  p.extra_deps << ['dm-core', "~>  DMGen::DM_VERSION"]
+  p.extra_deps << ['dm-core', "~> 0.10.0"]
 
 end
 
