@@ -104,7 +104,7 @@ Report it here: http://datamapper.lighthouseapp.com/
 
 === Credits
 
-Copyright (c) 2008-05-07 [Kematzy at gmail]
+Copyright (c) 2009-07-11 [kematzy gmail com]
 
 Loosely based on the ActsAsPublishable plugin by [http://fr.ivolo.us/posts/acts-as-publishable]
 
