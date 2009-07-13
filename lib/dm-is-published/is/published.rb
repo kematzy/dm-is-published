@@ -99,9 +99,9 @@ module DataMapper
     # == Errors / Bugs
     # 
     # If something is not behaving intuitively, it is a bug, and should be reported.
-    # Report it here: http://datamapper.lighthouseapp.com/
+    # Report it here: http://github.com/kematzy/dm-is-published/issues
     # 
-    # === Credits
+    # == Credits
     # 
     # Copyright (c) 2008-05-07 [Kematzy at gmail]
     # 
