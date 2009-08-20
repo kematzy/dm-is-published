@@ -203,18 +203,21 @@ module DataMapper
           # -- (Hash)  => all(:key => "value") ( normal operations, so just pass on the Hash ) 
           # -- (Symbol)  => all(:draft) ( just get the symbol, )
           # -- (Symbol, Hash )  => :draft, { extra options }
+          # -- (DataMapper somethings) => leave it alone
           if args.empty?
             return super 
+          elsif args.first.is_a?(Symbol)
+            # set the from args Array, remove first item if Symbol, and then check for 2nd item's presence
+            state, options = args.shift.to_s, (args.blank? ? {} : args.first) 
+            # puts " and state=[#{state}] and options=[#{options.class}] options.inspect=[#{options.inspect}] [#{__FILE__}:#{__LINE__}]"
+            return super({ :publish_status => state }.merge(options) )
           elsif args.first.is_a?(Hash)
+            # puts "dm-is-published args.first was a HASH ] [#{__FILE__}:#{__LINE__}]"
             return super(args.first)
           else
-            # set the from args Array, remove first item if Symbol, and then check for 2nd item's presence
-            state, options = args.shift.to_s, (args.blank? ? {} : args.first) if args.first.is_a?(Symbol)
-            # puts " and state=[#{state}] and options=[#{options.class}] options.inspect=[#{options.inspect}] [#{__FILE__}:#{__LINE__}]"
-            
-            return super({ :publish_status => state }.merge(options) )
+            # puts "dm-is-published (ELSE) [#{__FILE__}:#{__LINE__}]"
+            return super
           end
-          
         end
         
       end # ClassMethods

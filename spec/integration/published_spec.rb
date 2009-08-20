@@ -161,6 +161,15 @@ if HAS_SQLITE3 || HAS_MYSQL || HAS_POSTGRES
         
       end #/ #self.all
       
+      describe "#first" do 
+        
+        it "should description" do 
+          # Article.first.should == ''
+          # Article.first(:title => "Live Article").should == ''
+        end
+        
+      end #/ #first
+      
     end #/ Class Methods
     
     describe "Instance Methods" do 
