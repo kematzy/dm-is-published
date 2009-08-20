@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{dm-is-published}
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["kematzy"]
-  s.date = %q{2009-07-12}
+  s.date = %q{2009-08-20}
   s.description = %q{= dm-is-published
 
 This plugin makes it very easy to add different states to your models, like 'draft' vs 'live'. 
@@ -109,9 +109,9 @@ As I said above, for a better understanding of this gem/plugin, make sure you st
 == Errors / Bugs
 
 If something is not behaving intuitively, it is a bug, and should be reported.
-Report it here: http://datamapper.lighthouseapp.com/
+Report it here: http://github.com/kematzy/dm-is-published/issues
 
-=== Credits
+== Credits
 
 Copyright (c) 2009-07-11 [kematzy gmail com]
 
@@ -123,14 +123,14 @@ Released under the MIT license.
 }
   s.email = %q{kematzy@gmail.com}
   s.extra_rdoc_files = [
-    "History.txt",
+    "History.rdoc",
      "LICENSE",
      "README.rdoc",
      "TODO"
   ]
   s.files = [
     ".gitignore",
-     "History.txt",
+     "History.rdoc",
      "LICENSE",
      "README.rdoc",
      "Rakefile",
