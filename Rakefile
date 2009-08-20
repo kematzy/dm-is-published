@@ -39,7 +39,7 @@ task :default => :spec
 
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+  version = File.exist?('VERSION') ? IO.read('VERSION').chomp : "[Unknown]"
   
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "dm-is-published #{version}"
@@ -50,14 +50,15 @@ end
 
 desc 'Build the rdoc HTML Files'
 task :docs do
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""  
+  version = File.exist?('VERSION') ? IO.read('VERSION').chomp : "[Unknown]" 
+  
   sh "sdoc -N --title 'DM::Is::Published v#{version}' lib/dm-is-published README.rdoc"
 end
 
 namespace :docs do
   
   desc 'Remove rdoc products'
-  task :remove => [:clobber_rdoc] do |variable|
+  task :remove => [:clobber_rdoc] do 
     sh "rm -rf doc"
   end
   
