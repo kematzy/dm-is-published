@@ -51,7 +51,7 @@ end
 desc 'Build the rdoc HTML Files'
 task :docs do
   version = File.exist?('VERSION') ? File.read('VERSION') : ""  
-  sh "sdoc -N --title 'DM::Is::Published v#{version}' lib/dm-is-published"
+  sh "sdoc -N --title 'DM::Is::Published v#{version}' lib/dm-is-published README.rdoc"
 end
 
 namespace :docs do
