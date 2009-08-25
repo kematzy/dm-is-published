@@ -1,5 +1,5 @@
 # Needed to import datamapper and other gems
-require 'rubygems'
+# require 'rubygems' # read [ http://gist.github.com/54177 ] to understand why this line is commented out
 require 'pathname'
 
 # Add all external dependencies for the plugin here

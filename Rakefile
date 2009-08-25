@@ -1,4 +1,4 @@
-require 'rubygems'
+# require 'rubygems' # read [ http://gist.github.com/54177 ] to understand why this line is commented out
 require 'rake'
 
 begin

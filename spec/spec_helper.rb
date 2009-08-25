@@ -1,5 +1,5 @@
 require 'pathname'
-require 'rubygems'
+# require 'rubygems' # read [ http://gist.github.com/54177 ] to understand why this line is commented out
 
 gem 'rspec', '~>1.2.6'
 require 'spec'
