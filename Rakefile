@@ -6,7 +6,7 @@ begin
   
   Jeweler::Tasks.new do |gem|
     gem.name              = "dm-is-published"
-    gem.version           = IO.read('VERSION') || '0.0.0'
+    # gem.version           = IO.read('VERSION') || '0.0.0'
     gem.summary           = %Q{A DataMapper plugin that provides an easy way to add different states to your models.}
     gem.description       = IO.read('README.rdoc') || gem.summary
     gem.email             = "kematzy@gmail.com"
