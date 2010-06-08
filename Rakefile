@@ -1,25 +1,30 @@
-# require 'rubygems' # read [ http://gist.github.com/54177 ] to understand why this line is commented out
+require 'rubygems' 
 require 'rake'
 
 begin
   require 'jeweler'
+  
   Jeweler::Tasks.new do |gem|
-    gem.name = "dm-is-published"
-    gem.version = IO.read('VERSION') || '0.0.0'
-    gem.summary = %Q{A DataMapper plugin that provides an easy way to add different states to your models.}
-    # gem.description = gem.summary
-    gem.description = IO.read('README.rdoc') || gem.summary
-    gem.email = "kematzy@gmail.com"
-    gem.homepage = "http://github.com/kematzy/dm-is-published"
-    gem.authors = ["kematzy"]
-    gem.extra_rdoc_files = %w[ README.rdoc LICENSE TODO History.rdoc ]
-    # gem.add_dependency('dm-core', '>= 1.0.0')
-    # gem.add_dependency('dm-validations', '>= 1.0.0')
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    gem.name              = "dm-is-published"
+    gem.version           = IO.read('VERSION') || '0.0.0'
+    gem.summary           = %Q{A DataMapper plugin that provides an easy way to add different states to your models.}
+    gem.description       = IO.read('README.rdoc') || gem.summary
+    gem.email             = "kematzy@gmail.com"
+    gem.homepage          = 'http://github.com/kematzy/dm-is-published'
+    gem.authors           = ["kematzy"]
+    gem.extra_rdoc_files  = %w[ README.rdoc LICENSE TODO History.rdoc ]
+    
+    gem.add_dependency 'dm-core',   '~> 1.0.0.rc3'
+    
+    gem.add_development_dependency 'rspec',          '~> 1.3'
+    gem.add_development_dependency 'dm-migrations', '~> 1.0.0.rc3'
+    gem.add_development_dependency 'dm-validations', '~> 1.0.0.rc3'
   end
-
+  
+  Jeweler::GemcutterTasks.new
+  
 rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
+  puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
 
 require 'spec/rake/spectask'

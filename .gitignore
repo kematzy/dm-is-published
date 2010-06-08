@@ -5,12 +5,29 @@
 *.tmproj
 tmtags
 
+## EMACS
+*~
+\#*
+.\#*
+
+## VIM
+*.swp
+
+## RUBINIUS
+*.rbc
+
 ## PROJECT::GENERAL
 *.sw?
+*.gem
 coverage
 rdoc
 pkg
 doc
 
-## PROJECT::SPECIFIC
+## BUNDLER
+.bundle
+Gemfile.local
+Gemfile.lock
 
+## PROJECT::SPECIFIC
+spec/db/

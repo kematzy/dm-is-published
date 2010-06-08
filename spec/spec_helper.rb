@@ -1,9 +1,9 @@
 require 'pathname'
 # require 'rubygems' # read [ http://gist.github.com/54177 ] to understand why this line is commented out
 
-# gem 'rspec', '~>1.2.6'
-require 'spec'
-
+# require 'spec'
+require 'dm-validations'
+require 'dm-migrations'
 require Pathname(__FILE__).dirname.expand_path.parent + 'lib/dm-is-published'
 
 def load_driver(name, default_uri)
