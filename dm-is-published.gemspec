@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{dm-is-published}
-  s.version = "0.0.4"
+  s.version = "0.0.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["kematzy"]
@@ -162,9 +162,21 @@ Released under the MIT license.
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<dm-core>, ["~> 1.0.0.rc3"])
+      s.add_development_dependency(%q<rspec>, ["~> 1.3"])
+      s.add_development_dependency(%q<dm-migrations>, ["~> 1.0.0.rc3"])
+      s.add_development_dependency(%q<dm-validations>, ["~> 1.0.0.rc3"])
     else
+      s.add_dependency(%q<dm-core>, ["~> 1.0.0.rc3"])
+      s.add_dependency(%q<rspec>, ["~> 1.3"])
+      s.add_dependency(%q<dm-migrations>, ["~> 1.0.0.rc3"])
+      s.add_dependency(%q<dm-validations>, ["~> 1.0.0.rc3"])
     end
   else
+    s.add_dependency(%q<dm-core>, ["~> 1.0.0.rc3"])
+    s.add_dependency(%q<rspec>, ["~> 1.3"])
+    s.add_dependency(%q<dm-migrations>, ["~> 1.0.0.rc3"])
+    s.add_dependency(%q<dm-validations>, ["~> 1.0.0.rc3"])
   end
 end
 
