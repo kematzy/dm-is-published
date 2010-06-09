@@ -8,12 +8,8 @@ Originally inspired by the Rails plugin +acts_as_publishable+ by <b>fr.ivolo.us<
 
 == Installation
   
-  #  Add GitHub to your RubyGems sources 
-  $  gem sources -a http://gems.github.com
+  $  gem install dm-is-published
   
-  $  (sudo)? gem install kematzy-dm-is-published
-  
-<b>NB! Depends upon the whole DataMapper suite being installed, and has ONLY been tested with DM 0.10.0 (next branch).</b>
 
 
 == Getting Started
