@@ -135,6 +135,36 @@ if HAS_SQLITE3 || HAS_MYSQL || HAS_POSTGRES
         
       end #/ #publish_states
       
+      describe "#publish_states_as_json" do 
+        
+        it "should return the states as an array of Symbols" do 
+          DefaultsArticle.publish_states_as_json.should == "{ 'live': 'LIVE','draft': 'DRAFT','hidden': 'HIDDEN' }"
+          Article.publish_states_as_json.should == "{ 'live': 'LIVE','draft': 'DRAFT','prepared': 'PREPARED' }"
+          Image.publish_states_as_json.should == "{ 'yes': 'YES','no': 'NO' }"
+        end
+        
+        class ArticleWithDeclarationAsArray
+          include DataMapper::Resource
+          property :id,     Serial
+          is :published, [:a, :b, :c]
+        end 
+        
+        it "should handle the states declared within [ Array ] brackets" do
+          ArticleWithDeclarationAsArray.publish_states_as_json.should == "{ 'a': 'A','b': 'B','c': 'C' }"
+        end
+        
+        class ArticleWithDeclarationAsArrayOfStrings
+          include DataMapper::Resource
+          property :id,     Serial
+          is :published, %w(a b c)
+        end 
+        
+        it "should handle the states declared as %w(a b c) " do
+          ArticleWithDeclarationAsArrayOfStrings.publish_states_as_json.should == "{ 'a': 'A','b': 'B','c': 'C' }"
+        end
+        
+      end #/ #publish_states
+      
       describe "#all" do 
         
         before(:each) do 

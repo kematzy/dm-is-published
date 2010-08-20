@@ -183,6 +183,21 @@ module DataMapper
         attr_reader :publish_states, :publish_states_for_validation
         
         ##
+        # Returns a JSON representation of the publish states, where each state 
+        # is represented as a lowercase key and an uppercase value.
+        #  
+        # ==== Examples
+        # 
+        #   Model.publish_states_as_json  
+        #     
+        #     => { 'live': 'LIVE','draft': 'DRAFT','hidden': 'HIDDEN' }
+        # 
+        # @api public
+        def publish_states_as_json
+          %Q[{ #{self.publish_states_for_validation.collect{ |state| "'#{state.to_s.downcase}': '#{state.to_s.upcase}'" }.join(',')} }]
+        end
+        
+        ##
         # Overriding the normal #all method to add some extra sugar.
         #  
         # ==== Examples
