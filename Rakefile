@@ -1,52 +1,45 @@
 require 'rubygems' 
+require 'bundler'
+begin
+  Bundler.setup(:default, :development)
+rescue Bundler::BundlerError => e
+  $stderr.puts e.message
+  $stderr.puts "Run `bundle install` to install missing gems"
+  exit e.status_code
+end
 require 'rake'
 
-begin
-  require 'jeweler'
-  
-  Jeweler::Tasks.new do |gem|
-    gem.name              = "dm-is-published"
-    # gem.version           = IO.read('VERSION') || '0.0.0'
-    gem.summary           = %Q{A DataMapper plugin that provides an easy way to add different states to your models.}
-    gem.description       = gem.summary
-    gem.email             = "kematzy@gmail.com"
-    gem.homepage          = 'http://github.com/kematzy/dm-is-published'
-    gem.authors           = ["kematzy"]
-    gem.extra_rdoc_files  = %w[ README.rdoc LICENSE TODO History.rdoc ]
-    
-    gem.add_dependency 'dm-core',   '~> 1.0.0'
-    
-    gem.add_development_dependency 'rspec',          '~> 1.3'
-    gem.add_development_dependency 'dm-migrations', '~> 1.0.0'
-    gem.add_development_dependency 'dm-validations', '~> 1.0.0'
-  end
-  
-  Jeweler::GemcutterTasks.new
-  
-rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
+require 'jeweler'
+Jeweler::Tasks.new do |gem|
+  # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
+  gem.name = "dm-is-published"
+  gem.homepage = "http://github.com/kematzy/dm-is-published"
+  gem.license = "MIT"
+  gem.summary = %Q{A DataMapper plugin that provides an easy way to add different states to your models.}
+  gem.description = %Q{A DataMapper plugin that provides an easy way to add different states to your models.}
+  gem.email = "kematzy@gmail.com"
+  gem.authors = ["kematzy"]
+  gem.extra_rdoc_files = %w[ README.rdoc LICENSE ]
+  # dependencies defined in Gemfile
+end
+Jeweler::RubygemsDotOrgTasks.new
+
+require 'rspec/core'
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec) do |spec|
+  spec.pattern = FileList['spec/**/*_spec.rb']
 end
 
-require 'spec/rake/spectask'
-Spec::Rake::SpecTask.new(:spec) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.spec_opts = ["--color", "--format", "nested", "--require", "spec/spec_helper.rb"]
-  spec.spec_files = FileList['spec/**/*_spec.rb']
-end
-
-Spec::Rake::SpecTask.new(:rcov) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.spec_opts = ["--color", "--format", "nested", "--require", "spec/spec_helper.rb"]
+RSpec::Core::RakeTask.new(:rcov) do |spec|
   spec.pattern = 'spec/**/*_spec.rb'
   spec.rcov = true
 end
 
-
 task :default => :spec
 
-require 'rake/rdoctask'
+require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? IO.read('VERSION').chomp : "[Unknown]"
+  version = File.exist?('VERSION') ? File.read('VERSION') : ""
   
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "dm-is-published #{version}"
@@ -54,29 +47,10 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-
-desc 'Build the rdoc HTML Files'
+desc 'Build the *sdoc* HTML files'
 task :docs do
   version = File.exist?('VERSION') ? IO.read('VERSION').chomp : "[Unknown]" 
   
-  sh "sdoc -N --title 'DM::Is::Published v#{version}' lib/dm-is-published README.rdoc"
-end
-
-namespace :docs do
-  
-  desc 'Remove rdoc products'
-  task :remove => [:clobber_rdoc] do 
-    sh "rm -rf doc"
-  end
-  
-  desc 'Force a rebuild of the RDOC files'
-  task :rebuild => [:docs]
-  
-  desc 'Build docs, and open in browser for viewing (specify BROWSER)'
-  task :open => [:docs] do
-    browser = ENV["BROWSER"] || "safari"
-    sh "open -a #{browser} doc/index.html"
-  end
-  
+  sh "sdoc -N --title 'DM::Is::Published v#{version}' --exclude spec --O '#{Dir.pwd}/docs' lib/ README.rdoc"
 end
 
