@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>README.rdoc</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../css/github.css" type="text/css" media="screen" />
+<script src="../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/main.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+
+<body>     
+    <div class="banner">
+        
+        <h1>
+            README.rdoc
+        </h1>
+        <ul class="files">
+            <li>README.rdoc</li>
+            <li>Last modified: 2013-03-11 01:06:17 +0800</li>
+        </ul>
+    </div>
+
+    <div id="bodyContent">
+        <div id="content">
+  
+    <div class="description">
+      
+<h1 id="label-dm-is-published">dm-is-published</h1>
+
+<p>This plugin makes it very easy to add different states to your models, like
+‘draft’ vs ‘live’.  By default it also adds validations of the field value.</p>
+
+<p>Originally inspired by the Rails plugin <code>acts_as_publishable</code> by
+<strong>fr.ivolo.us</strong>.</p>
+
+<h2 id="label-Installation">Installation</h2>
+
+<pre>$  gem install dm-is-published</pre>
+
+<p>Or add the gem to your Gemfile, and then run <code>bundle install</code>.</p>
+
+<pre>gem 'dm-is-published', 'CURRENT_VERSION_NUMBER'</pre>
+
+<h3 id="label-Dependencies">Dependencies</h3>
+
+<p>The plugin depends upon the following:</p>
+<ul><li>
+<p>dm-mysql-adapter  OR  dm-sqlite3-adapter ( &gt;= 1.2.0)</p>
+</li><li>
+<p>data_mapper ( &gt;= 1.2.0)</p>
+</li><li>
+<p>activesupport (&gt;= 3.2.7)  -  method =&gt; Object#blank?</p>
+</li></ul>
+
+<h2 id="label-Getting+Started+">Getting Started </h2>
+
+<p>First of all, for a better understanding of this gem, make sure you study 
+the ‘<code>dm-is-published/spec/dm-is-published_spec.rb</code>’ file.</p>
+<hr style="height: 2px">
+
+<p>Require <code>dm-is-published</code> in your app.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">'data_mapper'</span>         <span class="ruby-comment"># must be required first</span>
+<span class="ruby-identifier">require</span> <span class="ruby-string">'dm-is-published'</span>
+</pre>
+
+<p>Lets say we have an Article class, and each Article can have a current
+state,  ie: whether it’s Live, Draft or an Obituary awaiting the death of
+someone famous (real or rumored)</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">Article</span>
+  <span class="ruby-identifier">include</span> <span class="ruby-constant">DataMapper</span><span class="ruby-operator">::</span><span class="ruby-constant">Resource</span>
+  <span class="ruby-identifier">property</span> :<span class="ruby-identifier">id</span>,     <span class="ruby-constant">Serial</span>
+  <span class="ruby-identifier">property</span> :<span class="ruby-identifier">title</span>,   <span class="ruby-constant">String</span>
+  <span class="ruby-operator">...</span><span class="ruby-operator">&lt;</span><span class="ruby-identifier">snip</span><span class="ruby-operator">&gt;</span>
+
+  <span class="ruby-identifier">is</span> :<span class="ruby-identifier">published</span>
+
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>Once you have your Article model we can create our Articles just as normal</p>
+
+<pre class="ruby"><span class="ruby-constant">Article</span>.<span class="ruby-identifier">create</span>(:<span class="ruby-identifier">title</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Example 1'</span>)
+</pre>
+
+<p>The instance of <code>Article.get(1)</code> now has the following things
+for free:</p>
+<ul><li>
+<p>a <code>:publish_status</code> attribute with the value
+<code>'live'</code>. Default choices are <code>[ :live, :draft, :hidden
+]</code>.</p>
+</li><li>
+<p><code>:is_live?, :is_draft? or :is_hidden?</code> methods that returns
+true/false based upon the state.</p>
+</li><li>
+<p><code>:save_as_live</code>, <code>:save_as_draft</code> or
+<code>:save_as_hidden</code> converts the instance to the state and saves
+it.</p>
+</li><li>
+<p><code>:publishable?</code> method that returns true for models where
+<code>is :published </code> has been declared, but <strong>false</strong>
+for those where it has not been declared.</p>
+</li></ul>
+
+<p>The Article class also gets a bit of new functionality:</p>
+
+<pre class="ruby"><span class="ruby-constant">Article</span>.<span class="ruby-identifier">all</span>(:<span class="ruby-identifier">draft</span>)  =<span class="ruby-operator">&gt;</span>  <span class="ruby-identifier">finds</span> <span class="ruby-identifier">all</span> <span class="ruby-constant">Articles</span> <span class="ruby-identifier">with</span> :<span class="ruby-identifier">publish_status</span> = :<span class="ruby-identifier">draft</span>
+
+<span class="ruby-constant">Article</span>.<span class="ruby-identifier">all</span>(:<span class="ruby-identifier">draft</span>, :<span class="ruby-identifier">author</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@author_joe</span> )  =<span class="ruby-operator">&gt;</span>  <span class="ruby-identifier">finds</span> <span class="ruby-identifier">all</span> <span class="ruby-constant">Articles</span> <span class="ruby-identifier">with</span> :<span class="ruby-identifier">publish_status</span> = :<span class="ruby-identifier">draft</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">author</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Joe</span>
+</pre>
+
+<p>Todo Need to write more documentation here..</p>
+
+<h2 id="label-Usage+Scenarios">Usage Scenarios</h2>
+
+<p>In a Blog/Publishing scenario you could use it like this:</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">Article</span> 
+  <span class="ruby-operator">...</span><span class="ruby-operator">&lt;</span><span class="ruby-identifier">snip</span><span class="ruby-operator">&gt;</span><span class="ruby-operator">...</span>
+
+  <span class="ruby-identifier">is</span> :<span class="ruby-identifier">published</span> <span class="ruby-operator">:</span><span class="ruby-identifier">live</span>, :<span class="ruby-identifier">draft</span>, :<span class="ruby-identifier">hidden</span>
+
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>Whereas in another scenario - like in a MenuItem model for a Restaurant -
+you could use it like this:</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">MenuItem</span>
+  <span class="ruby-operator">...</span><span class="ruby-operator">&lt;</span><span class="ruby-identifier">snip</span><span class="ruby-operator">&gt;</span><span class="ruby-operator">...</span>
+
+  <span class="ruby-identifier">is</span> :<span class="ruby-identifier">published</span>  <span class="ruby-operator">:</span><span class="ruby-identifier">on</span>, :<span class="ruby-identifier">off</span>  <span class="ruby-comment"># the item is either on the menu or not</span>
+
+<span class="ruby-keyword">end</span>
+</pre>
+
+<h2 id="label-RTFM+">RTFM </h2>
+
+<p>For a better understanding of this gem/plugin, make sure you study the
+‘<code>dm-is-select/spec/dm-is-select_spec.rb</code>’ file.</p>
+
+<h2 id="label-Errors+%2F+Bugs">Errors / Bugs</h2>
+
+<p>If something is not behaving intuitively, it is a bug, and should be
+reported. Report it here: <a
+href="http://github.com/kematzy/dm-is-published/issues">github.com/kematzy/dm-is-published/issues</a></p>
+
+<h2 id="label-Contributing+to+dm-is-published">Contributing to dm-is-published</h2>
+<ul><li>
+<p>Check out the latest master to make sure the feature hasn’t been
+implemented or the bug hasn’t been fixed yet.</p>
+</li><li>
+<p>Check out the issue tracker to make sure someone already hasn’t requested
+it and/or contributed it.</p>
+</li><li>
+<p>Fork the project.</p>
+</li><li>
+<p>Start a feature/bugfix branch.</p>
+</li><li>
+<p>Commit and push until you are happy with your contribution.</p>
+</li><li>
+<p>Make sure to add tests for it. This is important so I don’t break it in a
+future version unintentionally.</p>
+</li><li>
+<p>Please try not to mess with the Rakefile, version, or history. If you want
+to have your own version, or is otherwise necessary, that is fine, but
+please isolate to its own commit so I can cherry-pick around it.</p>
+</li></ul>
+
+<h2 id="label-Copyright">Copyright</h2>
+
+<p>Copyright © 2009 - 2013 Kematzy.</p>
+
+<p>Loosely based on the ActsAsPublishable plugin by [<a
+href="http://fr.ivolo.us/posts/acts-as-publishable">fr.ivolo.us/posts/acts-as-publishable</a>]</p>
+
+<h2 id="label-Licence">Licence</h2>
+
+<p>Released under the MIT license.</p>
+
+    </div>
+  
+
+
+  
+
+
+  
+  
+
+
+  
+
+
+  
+
+  
+
+
+
+  
+
+    
+
+    
+
+    
+
+
+    
+
+
+    <!-- Methods -->
+              </div>
+
+    </div>
+  </body>
+</html>

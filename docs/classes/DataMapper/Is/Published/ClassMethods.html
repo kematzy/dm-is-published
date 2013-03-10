@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>DataMapper::Is::Published::ClassMethods</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="../../../../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../../../css/main.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../../../css/github.css" type="text/css" media="screen" />
+<script src="../../../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../../js/main.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../../js/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+
+<body>     
+    <div class="banner">
+        
+        <h1>
+            <span class="type">Module</span> 
+            DataMapper::Is::Published::ClassMethods 
+            
+        </h1>
+        <ul class="files">
+            
+            <li><a href="../../../../files/lib/is/published_rb.html">lib/is/published.rb</a></li>
+            
+        </ul>
+    </div>
+    <div id="bodyContent">
+        <div id="content">
+  
+
+
+  
+
+
+  
+  
+
+
+  
+
+
+  
+    <!-- Method ref -->
+    <div class="sectiontitle">Methods</div>
+    <dl class="methods">
+      
+        <dt>A</dt>
+        <dd>
+          <ul>
+            
+              
+              <li>
+                <a href="#method-i-all">all</a>
+              </li>
+            
+          </ul>
+        </dd>
+      
+        <dt>P</dt>
+        <dd>
+          <ul>
+            
+              
+              <li>
+                <a href="#method-i-publish_states_as_json">publish_states_as_json</a>
+              </li>
+            
+          </ul>
+        </dd>
+      
+    </dl>
+  
+
+  
+
+
+
+  
+
+    
+
+    
+
+    
+
+
+    
+      <!-- Section attributes -->
+      <div class="sectiontitle">Attributes</div>
+      <table border='0' cellpadding='5'>
+        
+          <tr valign='top'>
+            <td class='attr-rw'>
+              [R]
+            </td>
+            <td class='attr-name'>publish_states</td>
+            <td class='attr-desc'></td>
+          </tr>
+        
+          <tr valign='top'>
+            <td class='attr-rw'>
+              [R]
+            </td>
+            <td class='attr-name'>publish_states_for_validation</td>
+            <td class='attr-desc'></td>
+          </tr>
+        
+      </table>
+    
+
+
+    <!-- Methods -->
+        
+      <div class="sectiontitle">Instance Public methods</div>
+      
+        <div class="method">
+          <div class="title method-title" id="method-i-all">
+            
+              <b>all</b>(*args)
+            
+            <a href="../../../../classes/DataMapper/Is/Published/ClassMethods.html#method-i-all" name="method-i-all" class="permalink">Link</a>
+          </div>
+          
+          
+            <div class="description">
+              <p>Overriding the normal <a href="ClassMethods.html#method-i-all">all</a>
+method to add some extra sugar.</p>
+
+<h4 id="method-i-all-label-Examples">Examples</h4>
+
+<pre class="ruby"><span class="ruby-constant">Article</span>.<span class="ruby-identifier">all</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">returns</span> <span class="ruby-identifier">all</span> <span class="ruby-constant">Articles</span> <span class="ruby-identifier">as</span> <span class="ruby-identifier">usual</span>
+
+<span class="ruby-constant">Article</span>.<span class="ruby-identifier">all</span>( :<span class="ruby-identifier">publish_status</span> =<span class="ruby-operator">&gt;</span> :<span class="ruby-identifier">live</span> )  =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">returns</span> <span class="ruby-identifier">all</span> <span class="ruby-constant">Articles</span> <span class="ruby-identifier">with</span> :<span class="ruby-identifier">publish_status</span> <span class="ruby-operator">==</span> :<span class="ruby-identifier">lve</span>
+
+<span class="ruby-constant">Article</span>.<span class="ruby-identifier">all</span>(:<span class="ruby-identifier">draft</span>)  =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">returns</span> <span class="ruby-identifier">all</span> <span class="ruby-constant">Articles</span> <span class="ruby-identifier">with</span> :<span class="ruby-identifier">publish_status</span> <span class="ruby-operator">==</span> :<span class="ruby-identifier">draft</span>
+
+<span class="ruby-constant">Article</span>.<span class="ruby-identifier">all</span>(:<span class="ruby-identifier">draft</span>, :<span class="ruby-identifier">author</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@author_joe</span> )  =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">finds</span> <span class="ruby-identifier">all</span> <span class="ruby-constant">Articles</span> <span class="ruby-identifier">with</span> :<span class="ruby-identifier">publish_status</span> = :<span class="ruby-identifier">draft</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">author</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Joe</span>
+</pre>
+
+<p>@api public/private</p>
+            </div>
+          
+          
+          
+          
+          
+            
+            <div class="sourcecode">
+              
+              <p class="source-link">
+                Source: 
+                <a href="javascript:toggleSource('method-i-all_source')" id="l_method-i-all_source">show</a>
+                
+              </p>
+              <div id="method-i-all_source" class="dyn-source">
+                <pre><span class="ruby-comment"># File lib/is/published.rb, line 216</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword ruby-title">all</span>(*<span class="ruby-identifier">args</span>)
+  <span class="ruby-comment"># incoming can either be:  </span>
+  <span class="ruby-comment"># -- nil (nothing passed in, so just use super )</span>
+  <span class="ruby-comment"># -- (Hash)  =&gt; all(:key =&gt; &quot;value&quot;) ( normal operations, so just pass on the Hash ) </span>
+  <span class="ruby-comment"># -- (Symbol)  =&gt; all(:draft) ( just get the symbol, )</span>
+  <span class="ruby-comment"># -- (Symbol, Hash )  =&gt; :draft, { extra options }</span>
+  <span class="ruby-comment"># -- (DataMapper somethings) =&gt; leave it alone</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">super</span> 
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Symbol</span>)
+    <span class="ruby-comment"># set the from args Array, remove first item if Symbol, and then check for 2nd item's presence</span>
+    <span class="ruby-identifier">state</span>, <span class="ruby-identifier">options</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">shift</span>.<span class="ruby-identifier">to_s</span>, (<span class="ruby-identifier">args</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-operator">?</span> {} <span class="ruby-operator">:</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>) 
+    <span class="ruby-comment"># puts &quot; and state=[#{state}] and options=[#{options.class}] options.inspect=[#{options.inspect}] [#{__FILE__}:#{__LINE__}]&quot;</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">super</span>({ <span class="ruby-value">:publish_status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">state</span> }.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">options</span>) )
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+    <span class="ruby-comment"># puts &quot;dm-is-published args.first was a HASH ] [#{__FILE__}:#{__LINE__}]&quot;</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">super</span>(<span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-comment"># puts &quot;dm-is-published (ELSE) [#{__FILE__}:#{__LINE__}]&quot;</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">super</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+              </div>
+            </div>
+            
+          </div>
+        
+        <div class="method">
+          <div class="title method-title" id="method-i-publish_states_as_json">
+            
+              <b>publish_states_as_json</b>()
+            
+            <a href="../../../../classes/DataMapper/Is/Published/ClassMethods.html#method-i-publish_states_as_json" name="method-i-publish_states_as_json" class="permalink">Link</a>
+          </div>
+          
+          
+            <div class="description">
+              <p>Returns a JSON representation of the publish states, where each state  is
+represented as a lowercase key and an uppercase value.</p>
+
+<h4 id="method-i-publish_states_as_json-label-Examples">Examples</h4>
+
+<pre class="ruby"><span class="ruby-constant">Model</span>.<span class="ruby-identifier">publish_states_as_json</span>  
+
+  =<span class="ruby-operator">&gt;</span> { <span class="ruby-string">'live'</span><span class="ruby-operator">:</span> <span class="ruby-string">'LIVE'</span>,<span class="ruby-string">'draft'</span><span class="ruby-operator">:</span> <span class="ruby-string">'DRAFT'</span>,<span class="ruby-string">'hidden'</span><span class="ruby-operator">:</span> <span class="ruby-string">'HIDDEN'</span> }
+</pre>
+
+<p>@api public</p>
+            </div>
+          
+          
+          
+          
+          
+            
+            <div class="sourcecode">
+              
+              <p class="source-link">
+                Source: 
+                <a href="javascript:toggleSource('method-i-publish_states_as_json_source')" id="l_method-i-publish_states_as_json_source">show</a>
+                
+              </p>
+              <div id="method-i-publish_states_as_json_source" class="dyn-source">
+                <pre><span class="ruby-comment"># File lib/is/published.rb, line 197</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword ruby-title">publish_states_as_json</span>
+  <span class="ruby-node">%Q[{ #{self.publish_states_for_validation.collect{ |state| &quot;'#{state.to_s.downcase}': '#{state.to_s.upcase}'&quot; }.join(',')} }]</span>
+<span class="ruby-keyword">end</span></pre>
+              </div>
+            </div>
+            
+          </div>
+                    </div>
+
+    </div>
+  </body>
+</html>    

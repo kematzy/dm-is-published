@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>DataMapper::Is::Published</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="../../../css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../../css/main.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../../css/github.css" type="text/css" media="screen" />
+<script src="../../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/main.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../../js/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+
+<body>     
+    <div class="banner">
+        
+        <h1>
+            <span class="type">Module</span> 
+            DataMapper::Is::Published 
+            
+        </h1>
+        <ul class="files">
+            
+            <li><a href="../../../files/lib/is/published_rb.html">lib/is/published.rb</a></li>
+            
+        </ul>
+    </div>
+    <div id="bodyContent">
+        <div id="content">
+  
+    <div class="description">
+      
+<h1 id="label-dm-is-published">dm-is-published</h1>
+
+<p>This plugin makes it very easy to add different states to your models, like
+‘draft’ vs ‘live’.  By default it also adds validations of the field value.</p>
+
+<p>Originally inspired by the Rails plugin <code>acts_as_publishable</code> by
+<strong>fr.ivolo.us</strong>.</p>
+
+<h2 id="label-Installation">Installation</h2>
+
+<pre>$  gem install dm-is-published</pre>
+
+<p>Or add the gem to your Gemfile, and then run <code>bundle install</code>.</p>
+
+<pre>gem 'dm-is-published', 'CURRENT_VERSION_NUMBER'</pre>
+
+<h2 id="label-Getting+Started">Getting Started</h2>
+
+<p>First of all, for a better understanding of this gem, make sure you study
+the ‘<code>dm-is-published/spec/integration/published_spec.rb</code>’ file.</p>
+<hr style="height: 2px">
+
+<p>Require <code>dm-is-published</code> in your app.</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">'data_mapper'</span>         <span class="ruby-comment"># must be required first</span>
+<span class="ruby-identifier">require</span> <span class="ruby-string">'dm-is-published'</span>
+</pre>
+
+<p>Lets say we have an Article class, and each Article can have a current
+state,  ie: whether it’s Live, Draft or an Obituary awaiting the death of
+someone famous (real or rumored)</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">Article</span>
+  <span class="ruby-identifier">include</span> <span class="ruby-constant">DataMapper</span><span class="ruby-operator">::</span><span class="ruby-constant">Resource</span>
+  <span class="ruby-identifier">property</span> :<span class="ruby-identifier">id</span>,     <span class="ruby-constant">Serial</span>
+  <span class="ruby-identifier">property</span> :<span class="ruby-identifier">title</span>,   <span class="ruby-constant">String</span>
+  <span class="ruby-operator">...</span><span class="ruby-operator">&lt;</span><span class="ruby-identifier">snip</span><span class="ruby-operator">&gt;</span>
+
+  <span class="ruby-identifier">is</span> :<span class="ruby-identifier">published</span>
+
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>Once you have your Article model we can create our Articles just as normal</p>
+
+<pre class="ruby"><span class="ruby-constant">Article</span>.<span class="ruby-identifier">create</span>(:<span class="ruby-identifier">title</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Example 1'</span>)
+</pre>
+
+<p>The instance of <code>Article.get(1)</code> now has the following things
+for free:</p>
+<ul><li>
+<p>a <code>:publish_status</code> attribute with the value
+<code>'live'</code>. Default choices are <code>[ :live, :draft, :hidden
+]</code>.</p>
+</li><li>
+<p><code>:is_live?, :is_draft? or :is_hidden?</code> methods that returns
+true/false based upon the state.</p>
+</li><li>
+<p><code>:save_as_live</code>, <code>:save_as_draft</code> or
+<code>:save_as_hidden</code> converts the instance to the state and saves
+it.</p>
+</li><li>
+<p><code>:publishable?</code> method that returns true for models where
+<code>is :published </code> has been declared, but <strong>false</strong>
+for those where it has not been declared.</p>
+</li></ul>
+
+<p>The Article class also gets a bit of new functionality:</p>
+
+<pre class="ruby"><span class="ruby-constant">Article</span>.<span class="ruby-identifier">all</span>(:<span class="ruby-identifier">draft</span>)  =<span class="ruby-operator">&gt;</span>  <span class="ruby-identifier">finds</span> <span class="ruby-identifier">all</span> <span class="ruby-constant">Articles</span> <span class="ruby-identifier">with</span> :<span class="ruby-identifier">publish_status</span> = :<span class="ruby-identifier">draft</span>
+
+<span class="ruby-constant">Article</span>.<span class="ruby-identifier">all</span>(:<span class="ruby-identifier">draft</span>, :<span class="ruby-identifier">author</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@author_joe</span> )  =<span class="ruby-operator">&gt;</span>  <span class="ruby-identifier">finds</span> <span class="ruby-identifier">all</span> <span class="ruby-constant">Articles</span> <span class="ruby-identifier">with</span> :<span class="ruby-identifier">publish_status</span> = :<span class="ruby-identifier">draft</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">author</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Joe</span>
+</pre>
+<dl class="rdoc-list note-list"><dt>Todo
+<dd>
+<p>add more documentation here…</p>
+</dd></dl>
+
+<h2 id="label-Usage+Scenarios">Usage Scenarios</h2>
+
+<p>In a Blog/Publishing scenario you could use it like this:</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">Article</span> 
+  <span class="ruby-operator">...</span><span class="ruby-operator">&lt;</span><span class="ruby-identifier">snip</span><span class="ruby-operator">&gt;</span><span class="ruby-operator">...</span>
+
+  <span class="ruby-identifier">is</span> :<span class="ruby-identifier">published</span> <span class="ruby-operator">:</span><span class="ruby-identifier">live</span>, :<span class="ruby-identifier">draft</span>, :<span class="ruby-identifier">hidden</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>Whereas in another scenario - like in a MenuItem model for a Restaurant -
+you could use it like this:</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">MenuItem</span>
+  <span class="ruby-operator">...</span><span class="ruby-operator">&lt;</span><span class="ruby-identifier">snip</span><span class="ruby-operator">&gt;</span><span class="ruby-operator">...</span>
+
+  <span class="ruby-identifier">is</span> :<span class="ruby-identifier">published</span>  <span class="ruby-operator">:</span><span class="ruby-identifier">on</span>, :<span class="ruby-identifier">off</span>  <span class="ruby-comment"># the item is either on the menu or not</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<h2 id="label-RTFM+">RTFM </h2>
+
+<p>As I said above, for a better understanding of this gem/plugin, make sure
+you study the
+‘<code>dm-is-published/spec/integration/published_spec.rb</code>’ file.</p>
+
+<h2 id="label-Errors+%2F+Bugs">Errors / Bugs</h2>
+
+<p>If something is not behaving intuitively, it is a bug, and should be
+reported. Report it here: <a
+href="http://github.com/kematzy/dm-is-published/issues">github.com/kematzy/dm-is-published/issues</a></p>
+
+<h2 id="label-Credits">Credits</h2>
+
+<p>Copyright © 2008 - 2013 [Kematzy at gmail]</p>
+
+<p>Loosely based on the ActsAsPublishable plugin by [<a
+href="http://fr.ivolo.us/posts/acts-as-publishable">fr.ivolo.us/posts/acts-as-publishable</a>]</p>
+
+<h2 id="label-Licence">Licence</h2>
+
+<p>Released under the MIT license.</p>
+
+    </div>
+  
+
+
+  
+
+
+  
+  
+
+
+  
+    <!-- Namespace -->
+    <div class="sectiontitle">Namespace</div>
+    <ul>
+      
+        <li>
+          <span class="type">MODULE</span>
+          <a href="Published/ClassMethods.html">DataMapper::Is::Published::ClassMethods</a>
+        </li>
+      
+        <li>
+          <span class="type">MODULE</span>
+          <a href="Published/InstanceMethods.html">DataMapper::Is::Published::InstanceMethods</a>
+        </li>
+      
+        <li>
+          <span class="type">MODULE</span>
+          <a href="Published/ResourceInstanceMethods.html">DataMapper::Is::Published::ResourceInstanceMethods</a>
+        </li>
+      
+    </ul>
+  
+
+
+  
+    <!-- Method ref -->
+    <div class="sectiontitle">Methods</div>
+    <dl class="methods">
+      
+        <dt>I</dt>
+        <dd>
+          <ul>
+            
+              
+              <li>
+                <a href="#method-i-is_published">is_published</a>
+              </li>
+            
+          </ul>
+        </dd>
+      
+    </dl>
+  
+
+  
+    <!-- Includes -->
+    <div class="sectiontitle">Included Modules</div>
+    <ul>
+      
+        <li>
+          
+            <a href="Published/InstanceMethods.html">
+              DataMapper::Is::Published::InstanceMethods
+            </a>
+          
+        </li>
+      
+    </ul>
+  
+
+
+
+  
+
+    
+
+    
+
+    
+      <!-- Section constants -->
+      <div class="sectiontitle">Constants</div>
+      <table border='0' cellpadding='5'>
+        
+          <tr valign='top'>
+            <td class="attr-name">VERSION</td>
+            <td>=</td>
+            <td class="attr-value">IO.read(&quot;#{File.dirname(__FILE__)}/../../VERSION&quot;).chomp</td>
+          </tr>
+          
+            <tr valign='top'>
+              <td>&nbsp;</td>
+              <td colspan="2" class="attr-desc"></td>
+            </tr>
+          
+        
+      </table>
+    
+
+
+    
+
+
+    <!-- Methods -->
+        
+      <div class="sectiontitle">Instance Public methods</div>
+      
+        <div class="method">
+          <div class="title method-title" id="method-i-is_published">
+            
+              <b>is_published</b>(*args)
+            
+            <a href="../../../classes/DataMapper/Is/Published.html#method-i-is_published" name="method-i-is_published" class="permalink">Link</a>
+          </div>
+          
+          
+            <div class="description">
+              <p>method that adds a basic published status attribute to your model</p>
+
+<h2 id="method-i-is_published-label-params+">params </h2>
+<ul><li>
+<p><code>states</code> - an array of 'states' as symbols or strings. ie:
+:live, :draft, :hidden</p>
+</li></ul>
+
+<h4 id="method-i-is_published-label-Examples">Examples</h4>
+
+<pre>is :published :on, :off
+
+is :published %w(a b c d)</pre>
+
+<p>@api public</p>
+            </div>
+          
+          
+          
+          
+          
+            
+            <div class="sourcecode">
+              
+              <p class="source-link">
+                Source: 
+                <a href="javascript:toggleSource('method-i-is_published_source')" id="l_method-i-is_published_source">show</a>
+                
+              </p>
+              <div id="method-i-is_published_source" class="dyn-source">
+                <pre><span class="ruby-comment"># File lib/is/published.rb, line 133</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword ruby-title">is_published</span>(*<span class="ruby-identifier">args</span>)
+  <span class="ruby-comment"># set default args if none passed in</span>
+  <span class="ruby-identifier">args</span> = [<span class="ruby-value">:live</span>, <span class="ruby-value">:draft</span>, <span class="ruby-value">:hidden</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">blank?</span>
+  <span class="ruby-identifier">args</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+  
+  <span class="ruby-comment"># the various publish states accepted.</span>
+  <span class="ruby-ivar">@publish_states</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">state</span><span class="ruby-operator">|</span> <span class="ruby-identifier">state</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_sym</span> }
+  <span class="ruby-ivar">@publish_states_for_validation</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">state</span><span class="ruby-operator">|</span> <span class="ruby-identifier">state</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">downcase</span> }
+  
+  <span class="ruby-identifier">extend</span>  <span class="ruby-constant">DataMapper</span><span class="ruby-operator">::</span><span class="ruby-constant">Is</span><span class="ruby-operator">::</span><span class="ruby-constant">Published</span><span class="ruby-operator">::</span><span class="ruby-constant">ClassMethods</span>
+  <span class="ruby-identifier">include</span> <span class="ruby-constant">DataMapper</span><span class="ruby-operator">::</span><span class="ruby-constant">Is</span><span class="ruby-operator">::</span><span class="ruby-constant">Published</span><span class="ruby-operator">::</span><span class="ruby-constant">InstanceMethods</span>
+  
+  <span class="ruby-comment"># do we have a :publish_status declared</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">properties</span>.<span class="ruby-identifier">any?</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value">:publish_status</span> }
+    
+    <span class="ruby-comment"># set default value to first value in declaration or the given value</span>
+    <span class="ruby-identifier">d</span> = <span class="ruby-identifier">properties</span>[<span class="ruby-value">:publish_status</span>].<span class="ruby-identifier">default</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@publish_states</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">properties</span>[<span class="ruby-value">:publish_status</span>].<span class="ruby-identifier">default</span>
+    
+    <span class="ruby-comment"># set the length to 10 if missing or if shorter than 5, otherwise use the given value</span>
+    <span class="ruby-identifier">l</span> = <span class="ruby-number">5</span>  <span class="ruby-keyword">if</span> <span class="ruby-identifier">properties</span>[<span class="ruby-value">:publish_status</span>].<span class="ruby-identifier">length</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-identifier">l</span> = (<span class="ruby-identifier">properties</span>[<span class="ruby-value">:publish_status</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-number">10</span> <span class="ruby-operator">?</span> <span class="ruby-number">10</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">properties</span>[<span class="ruby-value">:publish_status</span>].<span class="ruby-identifier">length</span>)
+    
+    <span class="ruby-identifier">property</span> <span class="ruby-value">:publish_status</span>, <span class="ruby-constant">String</span>, <span class="ruby-value">:length</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">l</span>, <span class="ruby-value">:default</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">d</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-comment"># no such property, so adding it with default values</span>
+    <span class="ruby-identifier">property</span> <span class="ruby-value">:publish_status</span>, <span class="ruby-constant">String</span>, <span class="ruby-value">:length</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-number">10</span>, <span class="ruby-value">:default</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@publish_states</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">to_s</span> 
+  <span class="ruby-keyword">end</span>
+  
+  <span class="ruby-comment"># create the state specific instance methods</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">publish_states</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">state</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">define_method</span>(<span class="ruby-node">&quot;is_#{state}?&quot;</span>) <span class="ruby-keyword">do</span> 
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">publish_status</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">state</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">define_method</span>(<span class="ruby-node">&quot;save_as_#{state}&quot;</span>) <span class="ruby-keyword">do</span> 
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">publish_status</span> = <span class="ruby-identifier">state</span>.<span class="ruby-identifier">to_s</span>
+      <span class="ruby-identifier">save</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  
+  <span class="ruby-comment"># ensure we are always saving publish_status values as strings</span>
+  <span class="ruby-identifier">before</span> <span class="ruby-value">:valid?</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">publish_status</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">publish_status</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:publish_status</span>)
+  <span class="ruby-keyword">end</span>
+  
+  <span class="ruby-identifier">validates_within</span>    <span class="ruby-value">:publish_status</span>, 
+                      <span class="ruby-value">:set</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@publish_states_for_validation</span>,
+                      <span class="ruby-value">:message</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;The publish_status value can only be one of these values: [ #{@publish_states_for_validation.join(', ')} ]&quot;</span>
+  
+<span class="ruby-keyword">end</span></pre>
+              </div>
+            </div>
+            
+          </div>
+                    </div>
+
+    </div>
+  </body>
+</html>    
