@@ -36,3 +36,6 @@ tmp
 
 # For rubinius:
 #*.rbc
+
+/.document
+/Gemfile.lock
