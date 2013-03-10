@@ -10,13 +10,13 @@ module DataMapper
     # 
     # 
     # == Installation
-    # 
-    #   #  Add GitHub to your RubyGems sources 
-    #   $  gem sources -a http://gems.github.com
-    # 
-    #   $  (sudo)? gem install kematzy-dm-is-published
-    # 
-    # <b>NB! Depends upon the whole DataMapper suite being installed, and has ONLY been tested with DM 0.10.0 (next branch).</b>
+    #
+    #   $  gem install dm-is-published
+    #
+    #
+    # Or add the gem to your Gemfile, and then run <tt>bundle install</tt>.
+    #
+    #   gem 'dm-is-published', 'CURRENT_VERSION_NUMBER'
     # 
     # 
     # == Getting Started
@@ -27,7 +27,7 @@ module DataMapper
     # 
     # Require +dm-is-published+ in your app.
     # 
-    #   require 'dm-core'         # must be required first
+    #   require 'data_mapper'         # must be required first
     #   require 'dm-is-published'
     # 
     # Lets say we have an Article class, and each Article can have a current state, 
@@ -103,7 +103,7 @@ module DataMapper
     # 
     # == Credits
     # 
-    # Copyright (c) 2008-05-07 [Kematzy at gmail]
+    # Copyright (c) 2008 - 2013 [Kematzy at gmail]
     # 
     # Loosely based on the ActsAsPublishable plugin by [http://fr.ivolo.us/posts/acts-as-publishable]
     # 
@@ -111,7 +111,8 @@ module DataMapper
     # 
     # Released under the MIT license.
     
-    module Published
+    module Published 
+      VERSION   = IO.read("#{File.dirname(__FILE__)}/../../VERSION").chomp
       
       ##
       # method that adds a basic published status attribute to your model

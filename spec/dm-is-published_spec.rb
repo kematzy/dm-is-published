@@ -1,10 +1,9 @@
-require 'pathname'
-require Pathname(__FILE__).dirname.expand_path.parent + 'spec_helper'
+require_relative './spec_helper'
 
 if HAS_SQLITE3 || HAS_MYSQL || HAS_POSTGRES
   describe 'DataMapper::Is::Published' do
     
-    class DefaultsArticle
+    class DefaultsArticle 
       include DataMapper::Resource
       property :id,     Serial
       property :title,   String
@@ -12,7 +11,7 @@ if HAS_SQLITE3 || HAS_MYSQL || HAS_POSTGRES
       is :published
     end 
     
-    class Article
+    class Article 
       include DataMapper::Resource
       property :id,     Serial
       property :title,   String
@@ -20,7 +19,7 @@ if HAS_SQLITE3 || HAS_MYSQL || HAS_POSTGRES
       is :published, :live, :draft, :prepared
     end 
     
-    class Image
+    class Image 
       include DataMapper::Resource
       property :id,     Serial
       property :title,   String
@@ -46,6 +45,13 @@ if HAS_SQLITE3 || HAS_MYSQL || HAS_POSTGRES
       
     end
     
+    describe "VERSION" do 
+      
+      it "should have a VERSION constant" do 
+        DataMapper::Is::Published::VERSION.should match(/\d\.\d+\.\d+/)
+      end
+      
+    end #/ VERSION
     
     describe "Property :publish_status" do 
       
@@ -103,23 +109,23 @@ if HAS_SQLITE3 || HAS_MYSQL || HAS_POSTGRES
           Image.publish_states.should == [:yes, :no]
         end
         
-        class ArticleWithDeclarationAsArray
+        class ArticleWithDeclarationAsArray 
           include DataMapper::Resource
           property :id,     Serial
           is :published, [:a, :b, :c]
         end 
         
-        it "should handle the states declared within [ Array ] brackets" do
+        it "should handle the states declared within [ Array ] brackets" do 
           ArticleWithDeclarationAsArray.publish_states.should == [:a, :b, :c]
         end
         
-        class ArticleWithDeclarationAsArrayOfStrings
+        class ArticleWithDeclarationAsArrayOfStrings 
           include DataMapper::Resource
           property :id,     Serial
           is :published, %w(a b c)
         end 
         
-        it "should handle the states declared as %w(a b c) " do
+        it "should handle the states declared as %w(a b c) " do 
           ArticleWithDeclarationAsArrayOfStrings.publish_states.should == [:a, :b, :c]
         end
         
@@ -143,23 +149,23 @@ if HAS_SQLITE3 || HAS_MYSQL || HAS_POSTGRES
           Image.publish_states_as_json.should == "{ 'yes': 'YES','no': 'NO' }"
         end
         
-        class ArticleWithDeclarationAsArray
+        class ArticleWithDeclarationAsArray 
           include DataMapper::Resource
           property :id,     Serial
           is :published, [:a, :b, :c]
         end 
         
-        it "should handle the states declared within [ Array ] brackets" do
+        it "should handle the states declared within [ Array ] brackets" do 
           ArticleWithDeclarationAsArray.publish_states_as_json.should == "{ 'a': 'A','b': 'B','c': 'C' }"
         end
         
-        class ArticleWithDeclarationAsArrayOfStrings
+        class ArticleWithDeclarationAsArrayOfStrings 
           include DataMapper::Resource
           property :id,     Serial
           is :published, %w(a b c)
         end 
         
-        it "should handle the states declared as %w(a b c) " do
+        it "should handle the states declared as %w(a b c) " do 
           ArticleWithDeclarationAsArrayOfStrings.publish_states_as_json.should == "{ 'a': 'A','b': 'B','c': 'C' }"
         end
         
@@ -173,7 +179,7 @@ if HAS_SQLITE3 || HAS_MYSQL || HAS_POSTGRES
           end
         end
         
-        it "should work as expected with Model.all" do
+        it "should work as expected with Model.all" do 
           Article.all.size.should == 8
         end
         
@@ -339,4 +345,5 @@ if HAS_SQLITE3 || HAS_MYSQL || HAS_POSTGRES
     end #/ Validations
     
   end
-end
+  
+end #/ if
