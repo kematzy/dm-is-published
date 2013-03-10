@@ -1,12 +1,11 @@
-require 'pathname'
-# require 'rubygems' # read [ http://gist.github.com/54177 ] to understand why this line is commented out
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+$LOAD_PATH.unshift(File.dirname(__FILE__))
+require 'rubygems'
+require 'rspec'
+require 'data_mapper'
+require_relative './../lib/dm-is-published'
 
-# require 'spec'
-require 'dm-validations'
-require 'dm-migrations'
-require Pathname(__FILE__).dirname.expand_path.parent + 'lib/dm-is-published'
-
-def load_driver(name, default_uri)
+def load_driver(name, default_uri) 
   return false if ENV['ADAPTER'] != name.to_s
 
   begin
@@ -19,8 +18,12 @@ def load_driver(name, default_uri)
   end
 end
 
+# support Mac OS X MAMP installation of MySQL
+socket_path = test(?d, "/Applications/MAMP/") ? '?socket=/Applications/MAMP/tmp/mysql/mysql.sock' : ''
+
 ENV['ADAPTER'] ||= 'sqlite3'
+# ENV['ADAPTER'] ||= 'mysql'
 
 HAS_SQLITE3  = load_driver(:sqlite3,  'sqlite3::memory:')
-HAS_MYSQL    = load_driver(:mysql,    'mysql://localhost/dm_core_test')
+HAS_MYSQL    = load_driver(:mysql,    "mysql://root:root@localhost/dm_core_test#{socket_path}")
 HAS_POSTGRES = load_driver(:postgres, 'postgres://postgres@localhost/dm_core_test')

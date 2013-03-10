@@ -1,13 +1,9 @@
-# Needed to import datamapper and other gems
-# require 'rubygems' # read [ http://gist.github.com/54177 ] to understand why this line is commented out
-require 'pathname'
-
 # Add all external dependencies for the plugin here
-require 'dm-core'
-require 'dm-validations'
+require 'data_mapper'
+require 'active_support/core_ext/object/blank' unless ''.respond_to?(:blank?)
 
 # Require plugin-files
-require Pathname(__FILE__).dirname.expand_path / 'dm-is-published' / 'is' / 'published.rb'
+require_relative './is/published'
 
 DataMapper::Model.append_extensions(DataMapper::Is::Published)
 DataMapper::Model.append_inclusions(DataMapper::Is::Published::ResourceInstanceMethods)
